@@ -9,7 +9,8 @@ from getpass import getpass
 from sys import platform
 
 import requests
-from Crypto.Cipher import ARC4
+# from Crypto.Cipher import ARC4
+from arc4 import ARC4 #alternative choose coz Crypto with errors 
 
 if platform != "win32":
     import readline
@@ -228,13 +229,15 @@ class XiaomiCloudConnector:
 
     @staticmethod
     def encrypt_rc4(password, payload):
-        r = ARC4.new(base64.b64decode(password))
+        # r = ARC4.new(base64.b64decode(password))
+        r = ARC4(base64.b64decode(password))
         r.encrypt(bytes(1024))
         return base64.b64encode(r.encrypt(payload.encode())).decode()
 
     @staticmethod
     def decrypt_rc4(password, payload):
-        r = ARC4.new(base64.b64decode(password))
+        # r = ARC4.new(base64.b64decode(password))
+        r = ARC4(base64.b64decode(password))
         r.encrypt(bytes(1024))
         return r.encrypt(base64.b64decode(payload))
 
